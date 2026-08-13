@@ -1,0 +1,26 @@
+# Python-generated files
+
+*.py[oc]
+dist/
+wheels/
+*.egg-info
+
+
+
+
+
+.env
+.env.*
+*.pt
+*.pth
+*.onnx
+data/raw/
+data/processed/
+__pycache__/
+.pytest_cache/
+.venv/
+.dart_tool/
+build/
+*.log
+.DS_Store
+Thumbs.db
