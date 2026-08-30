@@ -14,20 +14,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AfriNutri',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade800),
         useMaterial3: true,
       ),
-      home: OnboardingScreen(
-        onFinished: () {
-          // TODO(auth): remplacer par la navigation vers l'écran de login
-          // une fois les écrans d'authentification de Gaston (Issue #8) et
-          // le app_router (Issue #7) disponibles sur la branche.
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const _AuthPlaceholderScreen(),
-            ),
-          );
-        },
+      home: Builder(
+        builder: (context) => OnboardingScreen(
+          onFinished: () {
+            // TODO(auth): remplacer par la navigation vers l'écran de login
+            // une fois les écrans d'authentification de Gaston (Issue #8) et
+            // le app_router (Issue #7) disponibles sur la branche.
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const _AuthPlaceholderScreen(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

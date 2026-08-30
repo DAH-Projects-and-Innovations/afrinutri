@@ -2,36 +2,55 @@ import 'package:flutter/material.dart';
 
 class OnboardingSlide {
   const OnboardingSlide({
-    required this.icon,
+    required this.imagePath,
+    required this.badgeIcon,
+    required this.badgeLabel,
     required this.title,
     required this.description,
   });
 
-  final IconData icon;
+  final String imagePath;
+  final IconData badgeIcon;
+  final String badgeLabel;
   final String title;
   final String description;
 }
 
 const List<OnboardingSlide> onboardingSlides = [
   OnboardingSlide(
-    icon: Icons.restaurant_menu,
-    title: 'Suivez votre alimentation',
+    imagePath: 'assets/images/onboarding/plats_preferes.webp',
+    badgeIcon: Icons.public_outlined,
+    badgeLabel: 'Cuisine africaine',
+    title: 'Tes plats préférés, sous la loupe',
     description:
-        "Enregistrez vos repas au quotidien et gardez une vue claire "
-        "sur ce que vous mangez.",
+        "Thiéboudiène, mafé, alloco... AfriNutri reconnaît les recettes "
+        "africaines et calcule leurs nutriments en quelques secondes.",
   ),
   OnboardingSlide(
-    icon: Icons.camera_alt_outlined,
-    title: 'Analysez vos repas par IA',
+    imagePath: 'assets/images/onboarding/prend_photo.jpg',
+    badgeIcon: Icons.camera_alt_outlined,
+    badgeLabel: 'Scanner instantané',
+    title: "Prends une photo, obtiens l'analyse",
     description:
-        "Prenez une photo de votre plat : AfriNutri reconnaît les aliments "
-        "et calcule leurs valeurs nutritionnelles.",
+        "Pointe ton téléphone vers ton assiette. Notre IA identifie les "
+        "ingrédients et t'affiche calories, protéines et glucides.",
   ),
   OnboardingSlide(
-    icon: Icons.emoji_events_outlined,
-    title: 'Atteignez vos objectifs',
+    imagePath: 'assets/images/onboarding/compte_caloris.jfif',
+    badgeIcon: Icons.track_changes_outlined,
+    badgeLabel: 'Objectif personnalisé',
+    title: 'Un plan calorique rien que pour toi',
     description:
-        "Des recommandations adaptées à vos besoins pour progresser "
-        "vers une alimentation équilibrée.",
+        "Renseigne ton âge, ta taille et ton activité. AfriNutri calcule "
+        "ton objectif quotidien avec la formule Mifflin-St Jeor.",
+  ),
+  OnboardingSlide(
+    imagePath: 'assets/images/onboarding/coach_nutri.jpg',
+    badgeIcon: Icons.chat_bubble_outline,
+    badgeLabel: 'Assistant IA',
+    title: 'Ton coach nutrition personnel',
+    description:
+        "Pose tes questions à l'assistant AfriNutri : portions, fréquences, "
+        "alternatives saines — des conseils pensés pour la cuisine locale.",
   ),
 ];

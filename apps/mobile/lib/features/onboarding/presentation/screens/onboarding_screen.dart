@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/onboarding_slide.dart';
+import '../widgets/floating_pill.dart';
 import '../widgets/onboarding_page.dart';
 import '../widgets/page_indicator.dart';
+import '../widgets/primary_gradient_button.dart';
 
 /// First screen shown to a new user: presents the app's value proposition
 /// as a set of swipeable slides before handing off to auth ([onFinished]).
@@ -41,47 +43,79 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextButton(
-                  onPressed: _isLastSlide ? null : widget.onFinished,
-                  child: const Text('Passer'),
-                ),
-              ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: onboardingSlides.length,
+              onPageChanged: (index) => setState(() => _currentIndex = index),
+              itemBuilder: (context, index) {
+                return AnimatedBuilder(
+                  animation: _pageController,
+                  child: OnboardingPage(slide: onboardingSlides[index]),
+                  builder: (context, child) {
+                    var page = index.toDouble();
+                    if (_pageController.hasClients &&
+                        _pageController.position.haveDimensions) {
+                      page = _pageController.page ?? page;
+                    }
+                    final opacity = (1 - (page - index).abs()).clamp(0.0, 1.0);
+                    return Opacity(opacity: opacity, child: child);
+                  },
+                );
+              },
             ),
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: onboardingSlides.length,
-                onPageChanged: (index) => setState(() => _currentIndex = index),
-                itemBuilder: (context, index) {
-                  return OnboardingPage(slide: onboardingSlides[index]);
-                },
-              ),
-            ),
-            PageIndicator(
-              count: onboardingSlides.length,
-              currentIndex: _currentIndex,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: _goToNextSlide,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: FloatingPill(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.asset(
+                          'assets/images/logo.jfif',
+                          width: 18,
+                          height: 18,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'AfriNutri',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  child: Text(_isLastSlide ? 'Commencer' : 'Suivant'),
                 ),
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PageIndicator(
+                count: onboardingSlides.length,
+                currentIndex: _currentIndex,
+              ),
+              const SizedBox(height: 20),
+              PrimaryGradientButton(
+                label: _isLastSlide ? 'Commencer !' : 'Suivant',
+                onPressed: _goToNextSlide,
+              ),
+            ],
+          ),
         ),
       ),
     );

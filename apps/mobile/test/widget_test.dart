@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:afrinutri/main.dart';
@@ -6,21 +5,26 @@ import 'package:afrinutri/main.dart';
 void main() {
   testWidgets('Onboarding flow smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pump();
 
     // First slide is shown.
-    expect(find.text('Suivez votre alimentation'), findsOneWidget);
+    expect(find.text('Tes plats préférés, sous la loupe'), findsOneWidget);
 
-    // Tapping "Suivant" moves to the next slide.
+    // Tapping "Suivant" moves through the slides.
     await tester.tap(find.text('Suivant'));
     await tester.pumpAndSettle();
-    expect(find.text('Analysez vos repas par IA'), findsOneWidget);
+    expect(find.text("Prends une photo, obtiens l'analyse"), findsOneWidget);
 
-    // Advance to the last slide and finish onboarding.
     await tester.tap(find.text('Suivant'));
     await tester.pumpAndSettle();
-    expect(find.text('Atteignez vos objectifs'), findsOneWidget);
+    expect(find.text('Un plan calorique rien que pour toi'), findsOneWidget);
 
-    await tester.tap(find.text('Commencer'));
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ton coach nutrition personnel'), findsOneWidget);
+
+    // Last slide finishes onboarding.
+    await tester.tap(find.text('Commencer !'));
     await tester.pumpAndSettle();
     expect(find.text('Écrans d\'authentification à venir'), findsOneWidget);
   });

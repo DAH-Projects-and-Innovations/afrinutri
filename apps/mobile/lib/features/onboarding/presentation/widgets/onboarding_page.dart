@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/onboarding_slide.dart';
+import '../onboarding_palette.dart';
+import 'slide_badge.dart';
+import 'slide_image.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key, required this.slide});
@@ -9,44 +12,56 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Sized from the constraints this page actually receives (rather
+        // than the full screen via MediaQuery) so it stays correct however
+        // much space the parent PageView/Scaffold ends up allotting it.
+        final imageHeight = constraints.maxHeight * 0.5;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: imageHeight,
+              child: SlideImage(assetPath: slide.imagePath),
             ),
-            child: Icon(
-              slide.icon,
-              size: 72,
-              color: theme.colorScheme.primary,
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SlideBadge(
+                      icon: slide.badgeIcon,
+                      label: slide.badgeLabel,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      slide.title,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                        height: 1.25,
+                        color: OnboardingPalette.titleColor,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      slide.description,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        height: 1.45,
+                        color: OnboardingPalette.descriptionColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 40),
-          Text(
-            slide.title,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            slide.description,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }
